@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import Astronomy from "astronomy-engine";
+import * as Astronomy from "astronomy-engine";
 import { config } from "./config.js";
 import { getTile, initCatalog, searchStars } from "./catalog.js";
 import { observerFrom, planetSnapshot } from "./planets.js";
@@ -76,6 +76,6 @@ app.get("/api/planets", (req, res) => {
   });
 });
 
-app.listen(config.port, () => {
+app.listen(config.port, "0.0.0.0", () => {
   console.log(`InterStellar backend: http://localhost:${config.port}`);
 });
