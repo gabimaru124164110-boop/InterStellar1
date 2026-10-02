@@ -21,7 +21,7 @@ export function planetSnapshot(date: Date, observer: Observer): PlanetSnapshot[]
     const hours = equ.ra;
     const ra = hours * 15;
     const dec = equ.dec;
-    const distanceAu = vector.Length;
+    const distanceAu = vector.Length();
     // A visual angular diameter approximation from nominal mean diameters.
     const kmDiameter: Record<string, number> = {
       Mercury: 4879, Venus: 12104, Mars: 6779, Jupiter: 139820,
