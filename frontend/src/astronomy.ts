@@ -1,4 +1,4 @@
-import Astronomy from "astronomy-engine";
+import * as Astronomy from "astronomy-engine";
 import * as THREE from "three";
 
 export type ObserverState = {
