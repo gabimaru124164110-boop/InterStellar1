@@ -1,6 +1,5 @@
 import cors from "cors";
 import express from "express";
-import cors from "cors";
 import * as Astronomy from "astronomy-engine";
 import { config } from "./config.js";
 import { getTile, initCatalog, searchStars } from "./catalog.js";
