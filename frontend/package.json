@@ -1,0 +1,20 @@
+{
+  "name": "interstellar-frontend",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "astronomy-engine": "2.1.19",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@types/three": "0.180.0",
+    "typescript": "5.9.2",
+    "vite": "7.1.9"
+  }
+}

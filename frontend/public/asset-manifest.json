@@ -1,0 +1,14 @@
+{
+  "project": "InterStellar",
+  "milkyWay": {
+    "provider": "NASA SVS Deep Star Maps 2020",
+    "entry": "https://svs.gsfc.nasa.gov/4851/",
+    "defaultPreview": "https://svs.gsfc.nasa.gov/vis/a000000/a004800/a004851/milkyway_2020_4k_print.jpg",
+    "recommendedProductionSource": "milkyway_2020_8k.exr"
+  },
+  "planetTextures": {
+    "provider": "Solar System Scope",
+    "page": "https://www.solarsystemscope.com/textures/",
+    "license": "CC BY 4.0 according to provider"
+  }
+}
