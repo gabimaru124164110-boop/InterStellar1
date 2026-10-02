@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import cors from "cors";
 import * as Astronomy from "astronomy-engine";
@@ -6,6 +7,7 @@ import { getTile, initCatalog, searchStars } from "./catalog.js";
 import { observerFrom, planetSnapshot } from "./planets.js";
 
 const app = express();
+app.use(cors());
 app.disable("x-powered-by");
 app.use(cors());
 app.use(express.json());
