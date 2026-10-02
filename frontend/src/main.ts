@@ -1,3 +1,4 @@
+import "./style.css";
 import { equatorialToVector } from "./astronomy";
 import * as THREE from "three";
 import { createCamera, createControls, createRenderer, createScene } from "./scene";
@@ -110,8 +111,9 @@ function updateReadout() {
 }
 
 let lastPlanetFetch = 0;
-async function refreshDynamicLayers() {
-  if (state.planets && performance.now() - lastPlanetFetch > 2500) {
+async function refreshDynamicLayers(force = false) {
+  const interval = state.timeRate > 60 ? 100 : 500;
+  if (state.planets && (force || performance.now() - lastPlanetFetch > interval)) {
     lastPlanetFetch = performance.now();
     await planets.update(state.date, state.location);
   }
@@ -149,12 +151,10 @@ searchInput.addEventListener("input", async () => {
       btn.addEventListener("click", () => {
         const item = results.find(r => r.id === btn.dataset.id);
         if (!item) return;
-        controls.target.copy(camera.position);
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
         const dir = equatorialToVector(item.ra, item.dec).normalize();
-        camera.quaternion.setFromRotationMatrix(
-          new THREE.Matrix4().lookAt(new THREE.Vector3(0, 0, 0), dir, new THREE.Vector3(0, 1, 0))
-        );
+        camera.position.copy(dir.clone().multiplyScalar(-0.01));
+        controls.target.set(0, 0, 0);
+        controls.update();
         state.selected = item;
         document.querySelector<HTMLDivElement>("#skyTitle")!.textContent = item.name ?? item.id;
         resetSearch();
@@ -190,14 +190,14 @@ document.querySelector("#stepBack")!.addEventListener("click", () => {
   state.date = new Date(state.date.getTime() - 24 * 3600 * 1000);
   state.paused = true;
   pauseBtn.textContent = "▶";
-  void refreshDynamicLayers();
+  void refreshDynamicLayers(true);
 });
 
 document.querySelector("#stepForward")!.addEventListener("click", () => {
   state.date = new Date(state.date.getTime() + 24 * 3600 * 1000);
   state.paused = true;
   pauseBtn.textContent = "▶";
-  void refreshDynamicLayers();
+  void refreshDynamicLayers(true);
 });
 
 pauseBtn.addEventListener("click", () => {
@@ -270,4 +270,6 @@ function frame(now: number) {
   renderer.render(scene, camera);
 }
 
+void refreshDynamicLayers(true);
+void streamSky();
 frame(performance.now());

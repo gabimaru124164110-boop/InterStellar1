@@ -11,6 +11,34 @@ export const BODY_NAMES = [
   "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"
 ] as const;
 
+export type PlanetSnapshot = {
+  name: string;
+  ra: number;
+  dec: number;
+  distanceAu: number;
+  angularDiameterArcsec: number;
+  phase: number;
+  mag: number;
+};
+
+export type SolarSystemSnapshot = {
+  time: string;
+  observer: ObserverState;
+  sun: { ra: number; dec: number };
+  moon: { ra: number; dec: number };
+  planets: PlanetSnapshot[];
+};
+
+const kmDiameter: Record<string, number> = {
+  Mercury: 4879,
+  Venus: 12104,
+  Mars: 6779,
+  Jupiter: 139820,
+  Saturn: 116460,
+  Uranus: 50724,
+  Neptune: 49244
+};
+
 const bodyMap: Record<string, Astronomy.Body> = {
   Mercury: Astronomy.Body.Mercury,
   Venus: Astronomy.Body.Venus,
@@ -20,6 +48,49 @@ const bodyMap: Record<string, Astronomy.Body> = {
   Uranus: Astronomy.Body.Uranus,
   Neptune: Astronomy.Body.Neptune
 };
+
+export function getSolarSystemSnapshot(date: Date, observerState: ObserverState): SolarSystemSnapshot {
+  const obs = observerFromState(observerState);
+  const time = Astronomy.MakeTime(date);
+
+  const planets: PlanetSnapshot[] = BODY_NAMES.map(name => {
+    const body = bodyMap[name];
+    const vector = Astronomy.GeoVector(body, time, true);
+    const equ = Astronomy.EquatorFromVector(vector);
+    const hours = equ.ra;
+    const ra = hours * 15;
+    const dec = equ.dec;
+    const distanceAu = vector.Length();
+    const angularDiameterArcsec = 206265 * (kmDiameter[name] / 149597870.7) / distanceAu;
+    let mag = 0;
+    try {
+      const illum = Astronomy.Illumination(body, time);
+      mag = illum.mag;
+    } catch {
+      mag = 0;
+    }
+    return {
+      name,
+      ra,
+      dec,
+      distanceAu,
+      angularDiameterArcsec,
+      phase: 1,
+      mag
+    };
+  });
+
+  const sunEq = Astronomy.Equator(Astronomy.Body.Sun, date, obs, true, true);
+  const moonEq = Astronomy.Equator(Astronomy.Body.Moon, date, obs, true, true);
+
+  return {
+    time: date.toISOString(),
+    observer: observerState,
+    sun: { ra: sunEq.ra * 15, dec: sunEq.dec },
+    moon: { ra: moonEq.ra * 15, dec: moonEq.dec },
+    planets
+  };
+}
 
 export function observerFromState(o: ObserverState) {
   return new Astronomy.Observer(o.lat, o.lon, o.height);

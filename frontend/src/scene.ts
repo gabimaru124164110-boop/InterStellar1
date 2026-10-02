@@ -16,6 +16,14 @@ export function createRenderer() {
 export function createScene() {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x02040b);
+
+  const ambient = new THREE.AmbientLight(0xffffff, 1.5);
+  scene.add(ambient);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  dirLight.position.set(0, 1, 0);
+  scene.add(dirLight);
+
   return scene;
 }
 
