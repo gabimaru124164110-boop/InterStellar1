@@ -78,3 +78,4 @@ export async function fetchPlanets(date: Date, lat: number, lon: number, height:
   if (!response.ok) throw new Error("Planet request failed");
   return await response.json() as any;
 }
+// Deploy trigger
