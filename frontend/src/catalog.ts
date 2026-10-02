@@ -79,3 +79,4 @@ export async function fetchPlanets(date: Date, lat: number, lon: number, height:
   return await response.json() as any;
 }
 // Deploy trigger
+// Deploy trigger
