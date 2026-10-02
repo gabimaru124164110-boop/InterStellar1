@@ -1,3 +1,4 @@
+import { equatorialToVector } from "./astronomy";
 import * as THREE from "three";
 import { createCamera, createControls, createRenderer, createScene } from "./scene";
 import { addMilkyWay } from "./milkyway";
