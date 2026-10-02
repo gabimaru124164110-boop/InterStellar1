@@ -1,4 +1,5 @@
-import Astronomy, { Body, Observer, EquatorFromVector, GeoVector } from "astronomy-engine";
+import * as Astronomy from "astronomy-engine";
+import { Body, Observer, EquatorFromVector, GeoVector } from "astronomy-engine";
 import type { PlanetSnapshot } from "./types.js";
 
 const bodies: Array<[string, Body]> = [
