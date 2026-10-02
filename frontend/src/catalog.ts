@@ -9,7 +9,7 @@ export type Star = {
 
 export type Tile = { x: number; y: number; lod: number };
 
-const API = import.meta.env.VITE_API_URL ?? "http://localhost:8787";
+const API = import.meta.env.VITE_API_URL ?? "https://interstellar-backend-2jjv.onrender.com";
 const RA_TILES = 18;
 const DEC_TILES = 9;
 
